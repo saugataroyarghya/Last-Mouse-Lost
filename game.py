@@ -13,6 +13,7 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Last Mouse Lost")
 font = pygame.font.SysFont(None, 55)
 
+
 class Game:
     def __init__(self, num_h, num_s, opponent_type, screen, font):
         self.board = Board()
