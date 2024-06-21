@@ -51,3 +51,76 @@ class HumanPlayer:
 
         root.destroy()  # Close the root window
         return max_select if max_select is not None else 1
+import pygame
+import random
+
+class SmartPlayer:
+    def __init__(self, board, depth, screen_width, screen_height, game):
+        self.board = board
+        self.depth = depth
+        self.screen_width = screen_width
+        self.screen_height = screen_height
+        self.game = game  # Reference to the game instance to get max_select
+
+    def move(self):
+        max_select = self.game.max_select if self.game.max_select is not None else 1  # Use max_select from game
+        move = self.minimax(self.board, self.depth, True, float('-inf'), float('inf'), max_select)
+        return move[1]
+
+    def minimax(self, board, depth, maximizing, alpha, beta, max_select):
+        if depth == 0 or board.g_o():
+            return self.evaluate(board), []
+
+        if maximizing:
+            max_eval = float('-inf')
+            best_move = []
+            for r in range(len(board.b)):
+                for c in range(len(board.b[r])):
+                    if board.b[r][c] == 'o':
+                        new_board = board.dupe()
+                        move = []
+                        for col in range(c, min(c + max_select, len(new_board.b[r]))):
+                            if new_board.b[r][col] == 'o':
+                                move.append((r, col))
+                            else:
+                                break
+                        for pos in move:
+                            new_board.update_b(pos[0], pos[1])
+                        eval = self.minimax(new_board, depth - 1, False, alpha, beta, max_select)[0]
+                        if eval > max_eval:
+                            max_eval = eval
+                            best_move = move
+                        alpha = max(alpha, eval)
+                        if beta <= alpha:
+                            break
+            return max_eval, best_move
+        else:
+            min_eval = float('inf')
+            best_move = []
+            for r in range(len(board.b)):
+                for c in range(len(board.b[r])):
+                    if board.b[r][c] == 'o':
+                        new_board = board.dupe()
+                        move = []
+                        for col in range(c, min(c + max_select, len(new_board.b[r]))):
+                            if new_board.b[r][col] == 'o':
+                                move.append((r, col))
+                            else:
+                                break
+                        for pos in move:
+                            new_board.update_b(pos[0], pos[1])
+                        eval = self.minimax(new_board, depth - 1, True, alpha, beta, max_select)[0]
+                        if eval < min_eval:
+                            min_eval = eval
+                            best_move = move
+                        beta = min(beta, eval)
+                        if beta <= alpha:
+                            break
+            return min_eval, best_move
+
+    def evaluate(self, board):
+        # Simple evaluation function
+        score = 0
+        for row in board.b:
+            score += row.count('o')
+        return -score    
