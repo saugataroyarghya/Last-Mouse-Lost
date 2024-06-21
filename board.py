@@ -29,6 +29,30 @@ class Board:
 
     def __len__(self):
         return len(self.b)
+    def num_row(self):
+        temp_l = []
+        for i in range(len(self.b)):
+            s = 0
+            for c in range(len(self.b[i])-1, -1, -1):
+                if self.b[i][c] == 'o':
+                    s += 1
+                else:
+                    break
+                temp_l.append(s)
+        return temp_l
+    
+    def diff(self, r1, r2):
+        r10 = 0
+        r20 = 0
+        for i in range(0, len(self.b[r1])):
+            if self.b[r1][i] == 'o':
+                r10 += 1
+            if self.b[r2][i] == 'o':
+                r20 += 1
+        if r10 > r20:
+            return (r1, r10 - r20)
+        else:
+            return (r2, r20 - r10)
 
     def dupe(self):
         new_board = Board()
