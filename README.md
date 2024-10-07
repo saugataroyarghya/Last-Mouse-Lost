@@ -32,9 +32,9 @@ This is a Python-based implementation of the **Last Mouse Lost** game, designed 
 - **Fuzzy Logic AI:** Evaluates moves based on fuzzy logic principles.
 - **Minimax AI:** Uses the Minimax algorithm with alpha-beta pruning for optimal moves.
 - **Genetic Algorithm AI:** Utilizes evolutionary strategies to optimize move sequences.
-- **A* AI:** Applies the A* search algorithm to find the shortest path to victory.
+- **A\* AI:** Applies the A* search algorithm to find the shortest path to victory.
 
-
+ow
 
 ## Future Improvements
 - Add more advanced AI strategies, including reinforcement learning.
